@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import MetricCard from "./MetricCard";
 import CpuChart from "./CpuChart";
+import MemoryChart from "./MemoryChart";
+import UptimeChart from "./UptimeChart";
+import ResponseTimeChart from "./ResponseTimeChart";
 import ControlButtons from "./ControlButtons";
 import { io } from "socket.io-client";
 
@@ -12,10 +15,24 @@ const socket = io(socketUrl, {
   autoConnect: false,
 });
 
-// Define the CpuData type
 interface CpuData {
   time: string;
   cpuPercentage: number;
+}
+
+interface MemoryData {
+  time: string;
+  memoryUsage: number;
+}
+
+interface UptimeData {
+  time: string;
+  uptime: number;
+}
+
+interface ResponseTimeData {
+  time: string;
+  responseTime: number;
 }
 
 const Dashboard = () => {
@@ -29,6 +46,11 @@ const Dashboard = () => {
   });
 
   const [cpuData, setCpuData] = useState<CpuData[]>([]);
+  const [memoryData, setMemoryData] = useState<MemoryData[]>([]);
+  const [uptimeData, setUptimeData] = useState<UptimeData[]>([]);
+  const [responseTimeData, setResponseTimeData] = useState<ResponseTimeData[]>(
+    []
+  );
 
   useEffect(() => {
     socket.connect();
@@ -41,10 +63,23 @@ const Dashboard = () => {
       console.log("Received data:", data);
       setMetrics(data);
 
-      // Add new CPU data point
+      // Add new data points
+      const currentTime = new Date().toISOString();
       setCpuData((prevData) => [
         ...prevData,
-        { time: new Date().toISOString(), cpuPercentage: data.cpuPercentage },
+        { time: currentTime, cpuPercentage: data.cpuPercentage },
+      ]);
+      setMemoryData((prevData) => [
+        ...prevData,
+        { time: currentTime, memoryUsage: data.memoryUsage },
+      ]);
+      setUptimeData((prevData) => [
+        ...prevData,
+        { time: currentTime, uptime: data.uptime },
+      ]);
+      setResponseTimeData((prevData) => [
+        ...prevData,
+        { time: currentTime, responseTime: data.responseTime },
       ]);
     });
 
@@ -88,6 +123,12 @@ const Dashboard = () => {
       </div>
       <div className="charts">
         <CpuChart data={cpuData} title="CPU Usage Over Time" />
+        <MemoryChart data={memoryData} title="Memory Usage Over Time" />
+        <UptimeChart data={uptimeData} title="Uptime Over Time" />
+        <ResponseTimeChart
+          data={responseTimeData}
+          title="Response Time Over Time"
+        />
       </div>
       <ControlButtons />
     </div>
