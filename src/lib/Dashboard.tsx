@@ -1,15 +1,22 @@
 import { useState, useEffect } from "react";
 import MetricCard from "./MetricCard";
-import LineChart from "./LineChart";
+import CpuChart from "./CpuChart";
 import ControlButtons from "./ControlButtons";
 import { io } from "socket.io-client";
 
-const socketUrl = import.meta.env.VITE_BACKEND_URL as string;
+const socketUrl = import.meta.env.VITE_BACKEND_URL;
 console.log("Attempting to connect to:", socketUrl);
 
 const socket = io(socketUrl, {
-  transports: ["websocket", "polling"], // You can try removing "polling" to force WebSocket
+  transports: ["websocket", "polling"],
+  autoConnect: false,
 });
+
+// Define the CpuData type
+interface CpuData {
+  time: string;
+  cpuPercentage: number;
+}
 
 const Dashboard = () => {
   const [metrics, setMetrics] = useState({
@@ -21,7 +28,11 @@ const Dashboard = () => {
     responseTime: 0,
   });
 
+  const [cpuData, setCpuData] = useState<CpuData[]>([]);
+
   useEffect(() => {
+    socket.connect();
+
     socket.on("connect", () => {
       console.log("Connected to Socket.IO server");
     });
@@ -29,6 +40,12 @@ const Dashboard = () => {
     socket.on("serverStats", (data) => {
       console.log("Received data:", data);
       setMetrics(data);
+
+      // Add new CPU data point
+      setCpuData((prevData) => [
+        ...prevData,
+        { time: new Date().toISOString(), cpuPercentage: data.cpuPercentage },
+      ]);
     });
 
     socket.on("connect_error", (err) => {
@@ -70,11 +87,7 @@ const Dashboard = () => {
         />
       </div>
       <div className="charts">
-        <LineChart data={[metrics.cpuPercentage]} title="CPU Usage Over Time" />
-        <LineChart
-          data={[metrics.memoryUsage]}
-          title="Memory Usage Over Time"
-        />
+        <CpuChart data={cpuData} title="CPU Usage Over Time" />
       </div>
       <ControlButtons />
     </div>
