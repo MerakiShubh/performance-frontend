@@ -60,7 +60,7 @@ const Dashboard = () => {
     });
 
     socket.on("serverStats", (data) => {
-      console.log("Received data:", data);
+      // console.log("Received data:", data);
       setMetrics(data);
 
       // Add new data points

@@ -22,7 +22,7 @@ function ResponseTimeChart({ data, title }: ResponseTimeChartProps) {
     <div className="line-chart">
       <h2>{title}</h2>
       <RechartsLineChart
-        width={1200}
+        width={1800}
         height={500}
         data={data}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
