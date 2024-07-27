@@ -5,6 +5,7 @@ import MemoryChart from "./MemoryChart";
 import UptimeChart from "./UptimeChart";
 import ResponseTimeChart from "./ResponseTimeChart";
 import ControlButtons from "./ControlButtons";
+import MemoryPieChart from "./MemoryPieChart";
 import { io } from "socket.io-client";
 
 const socketUrl = import.meta.env.VITE_BACKEND_URL;
@@ -96,6 +97,12 @@ const Dashboard = () => {
     };
   }, []);
 
+  const memoryPieData = [
+    { name: "Memory Usage", value: metrics.memoryUsage, fill: "#82ca9d" },
+    { name: "Free Memory", value: metrics.freeMemory, fill: "#8884d8" },
+    { name: "Total Memory", value: metrics.totalMemory, fill: "#ffc658" },
+  ];
+
   return (
     <div className="dashboard">
       <div className="metric-cards">
@@ -129,6 +136,7 @@ const Dashboard = () => {
           data={responseTimeData}
           title="Response Time Over Time"
         />
+        <MemoryPieChart data={memoryPieData} title="Memory Distribution" />
       </div>
       <ControlButtons />
     </div>
