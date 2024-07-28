@@ -20,7 +20,7 @@ interface UptimeChartProps {
 function UptimeChart({ data, title }: UptimeChartProps) {
   return (
     <div className="line-chart">
-      <h2>{title}</h2>
+      <h2 className="text-lg mb-4">{title}</h2>
       <RechartsLineChart
         width={600}
         height={500}

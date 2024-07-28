@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/chart";
 import { Pie, PieChart, LabelList } from "recharts";
 
-interface MemoryPieChartProps {
+interface UpResponsePieChartProps {
   data: {
     name: string;
     value: number;
@@ -15,15 +15,18 @@ interface MemoryPieChartProps {
   title: string;
 }
 
-const MemoryPieChart: React.FC<MemoryPieChartProps> = ({ data, title }) => {
+const UpResponsePieChart: React.FC<UpResponsePieChartProps> = ({
+  data,
+  title,
+}) => {
   const chartConfig = {
-    freeMemory: {
-      label: "Free Memory",
-      color: "#8884d8",
+    totalCpu: {
+      label: "Total Cpu",
+      color: "#82ca9d",
     },
-    totalMemory: {
-      label: "Total Memory",
-      color: "#ffc658",
+    currentCpu: {
+      label: "Current Cpu",
+      color: "#8884d8",
     },
   };
 
@@ -59,4 +62,4 @@ const MemoryPieChart: React.FC<MemoryPieChartProps> = ({ data, title }) => {
   );
 };
 
-export default MemoryPieChart;
+export default UpResponsePieChart;

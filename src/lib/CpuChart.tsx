@@ -20,7 +20,7 @@ interface CpuChartProps {
 function CpuChart({ data, title }: CpuChartProps) {
   return (
     <div className="line-chart">
-      <h2>{title}</h2>
+      <h2 className="text-lg mb-8">{title}</h2>
       <RechartsLineChart
         width={1800}
         height={500}

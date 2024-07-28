@@ -20,7 +20,7 @@ interface MemoryChartProps {
 function MemoryChart({ data, title }: MemoryChartProps) {
   return (
     <div className="line-chart">
-      <h2>{title}</h2>
+      <h2 className="text-lg mb-4">{title}</h2>
       <RechartsLineChart
         width={800}
         height={500}

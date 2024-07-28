@@ -71,7 +71,7 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 100px;
   padding: 20px;
 }
 
@@ -93,6 +93,9 @@
   border-radius: 8px;
   padding: 16px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .charts {

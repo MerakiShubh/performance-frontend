@@ -32,7 +32,7 @@ const ControlButtons = () => {
   };
 
   return (
-    <div className="control-buttons">
+    <div className="control-buttons flex flex-row justify-center gap-20">
       <Button
         onClick={() => handleControl("start")}
         disabled={loading === "start"}

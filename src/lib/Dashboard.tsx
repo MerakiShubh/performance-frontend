@@ -12,6 +12,7 @@ import CpuTimesCard from "./CpuTimesCard";
 import MainCpuCard from "./MainCpuCard";
 import CpuPieChart from "./CpuPieChart";
 import MetricCard from "./MetricCard";
+import UpResponsePieChart from "./UpResponsePieChart";
 
 const socketUrl = import.meta.env.VITE_BACKEND_URL;
 console.log("Attempting to connect to:", socketUrl);
@@ -103,7 +104,7 @@ const Dashboard = () => {
     });
 
     socket.on("serverStats", (data) => {
-      console.log("Received data:", data);
+      // console.log("Received data:", data);
       setMetrics(data);
 
       // Add new data points
@@ -154,8 +155,18 @@ const Dashboard = () => {
     },
   ];
 
+  const upresponseChartData = [
+    { name: "Response Time", value: metrics.responseTime, fill: "#82ca9d" },
+    {
+      name: "UpTime",
+      value: metrics.uptime,
+      fill: "#8884d8",
+    },
+  ];
+
   return (
-    <div className="dashboard">
+    <div className="dashboard bg-slate-300">
+      <h1 className="text-3xl font-bold">Performance Tracker</h1>
       <div className="w-screen flex flex-row justify-around ">
         <CpuCard
           title="CPU"
@@ -173,12 +184,12 @@ const Dashboard = () => {
         <CpuInfoCard title="CPU Info" value={metrics.cpuInfo} />
         <CpuPieChart data={cpuPieChart} title="Cpu Distribution" />
       </div>
-      <div className="cpu-times-row">
-        <CpuTimesCard title="CPU Times" value={metrics.cpuTimes} />
-      </div>
+
+      <CpuTimesCard title="CPU Times" value={metrics.cpuTimes} />
+
       <CpuChart data={cpuData} title="CPU Usage Over Time" />
 
-      <div className="w-screen flex flex-row flex-wrap justify-around">
+      <div className="w-screen flex flex-row  justify-around">
         <MetricCard
           title="Memory Usage"
           value={`${metrics.memoryUsage.toFixed(2)} MB`}
@@ -191,9 +202,12 @@ const Dashboard = () => {
           title="Total Memory"
           value={`${metrics.totalMemory.toFixed(2)} MB`}
         />
+      </div>
+      <div className="max-h-max flex flex-row justify-around items-center">
+        <MemoryChart data={memoryData} title="Memory Usage Over Time" />
         <MemoryPieChart data={memoryPieData} title="Memory Distribution" />
       </div>
-      <MemoryChart data={memoryData} title="Memory Usage Over Time" />
+
       <div className="w-screen flex flex-row flex-wrap justify-around">
         <MetricCard title="Uptime" value={`${metrics.uptime.toFixed(2)} s`} />
         <MetricCard
@@ -201,7 +215,14 @@ const Dashboard = () => {
           value={`${metrics.responseTime.toFixed(2)} ms`}
         />
       </div>
-      <UptimeChart data={uptimeData} title="Uptime Over Time" />
+      <div className="max-h-max flex flex-row justify-around items-center">
+        <UptimeChart data={uptimeData} title="Uptime Over Time" />
+        <UpResponsePieChart
+          data={upresponseChartData}
+          title="Server Response"
+        />
+      </div>
+
       <ResponseTimeChart
         data={responseTimeData}
         title="Response Time Over Time"
