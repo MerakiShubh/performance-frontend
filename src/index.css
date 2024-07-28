@@ -69,28 +69,34 @@
 }
 
 .dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 20px;
 }
 
-.metric-cards {
+.cpu-row {
   display: flex;
-  flex-wrap: wrap;
   gap: 20px;
 }
 
-.metric-card {
-  background-color: #f0f0f0;
-  padding: 20px;
+.cpu-times-row {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 10px;
+}
+
+.metric-card,
+.cpu-times-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  min-width: 200px;
+  padding: 16px;
+  text-align: center;
 }
 
-.line-chart {
-  margin-top: 20px;
-}
-
-.control-buttons {
-  margin-top: 20px;
+.charts {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
